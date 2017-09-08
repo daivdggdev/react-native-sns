@@ -1,103 +1,173 @@
-package com.dwwang.RNAdPoly;
+package com.dwwang.sns;
 
-import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.Callback;
+import android.app.Activity;
+import android.content.Intent;
+import android.util.Log;
+
+import com.facebook.react.bridge.ActivityEventListener;
+import com.facebook.react.bridge.BaseActivityEventListener;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.WritableMap;
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareConfig;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import android.util.Log;
-import android.net.Uri;
-import android.view.ViewGroup;
-import android.content.Intent;
-
-import com.qq.e.ads.splash.SplashAD;
-import com.qq.e.ads.splash.SplashADListener;
 
 
-public class RNAdPolyModule extends ReactContextBaseJavaModule {
+public class RNSnsModule extends ReactContextBaseJavaModule {
+    private static final String TAG = "RNSnsModule";
+    ReactApplicationContext mContext;
 
-    private SplashAD mSplashAD;
-    ReactApplicationContext context;
+    private final ActivityEventListener mActivityEventListener = new BaseActivityEventListener() {
+        @Override
+        public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+            UMShareAPI.get(mContext).onActivityResult(requestCode, resultCode, data);
+        }
+    };
 
-    public RNAdPolyModule(ReactApplicationContext context) {
+    public RNSnsModule(ReactApplicationContext context) {
         super(context);
-        this.context = context;
+        this.mContext = context;
+
+        // 三方获取用户资料时每次都要进行授权
+        UMShareConfig config = new UMShareConfig();
+        config.isNeedAuthOnGetUserInfo(true);
+        UMShareAPI.get(context).setShareConfig(config);
+
+        context.addActivityEventListener(mActivityEventListener);
     }
 
     @Override
     public String getName() {
-        return "RNAdPoly";
+        return "RNSns";
     }
 
     @ReactMethod
-    public void showSplash(String type, String appKey, String placementId) {
-        Log.i("AD_DEMO", "type = " + type);
-            showGdtSplash(appKey, placementId);
-        if (type == "gdt") {
-        Log.i("AD_DEMO", "type22 = " + type);
-            showGdtSplash(appKey, placementId);
-        }
-        Log.i("AD_DEMO", "type33 = " + type);
+    public void setWeixin(String id, String secret) {
+        PlatformConfig.setWeixin(id, secret);
     }
 
-    private void showGdtSplash(String appKey, String placementId) {
-        Log.i("AD_DEMO", "appKey = " + appKey);
-        if (appKey == null || placementId == null) {
-            return;
+    @ReactMethod
+    public void setSinaWeibo(String key, String secret, String redirectUrl) {
+        PlatformConfig.setSinaWeibo(key, secret, redirectUrl);
+    }
+
+    @ReactMethod
+    public void setQQZone(String id, String key) {
+        PlatformConfig.setQQZone(id, key);
+    }
+
+    @ReactMethod
+    public void getPlatformInfo(String type, final Promise promise) {
+        SHARE_MEDIA platform = SHARE_MEDIA.QQ;
+        switch (type) {
+            case "weixin":
+                platform = SHARE_MEDIA.WEIXIN;
+                break;
+
+            case "weibo":
+                platform = SHARE_MEDIA.SINA;
+                break;
+
+            case "qq":
+                platform = SHARE_MEDIA.QQ;
+                break;
         }
 
-        
-        Log.i("AD_DEMO", "showGdtSplash");
-        ReactApplicationContext context = getReactApplicationContext();
-        int rid = IdHelper.getLayout(context, "activity_splash");
-        Log.i("AD_DEMO", "rid112 = " + R.layout.dev_loading_view);
-
-        Log.i("AD_DEMO", "R.layout = " + context.getApplicationContext().getPackageName());
-
-        Intent intent = new Intent(context, SplashActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
-        //this.context.startActivity(new Intent(this.context, SplashActivity.class));
-        /*
-        Activity activity = (Activity)this.context;
-        ViewGroup viewGroup = (ViewGroup) activity.getWindow().getDecorView();
-        mSplashAD = new SplashAD(this.context, viewGroup, appKey, placementId, new SplashADListener() {
+        Activity activity = mContext.getCurrentActivity();
+        UMShareAPI.get(mContext).getPlatformInfo(activity, platform, new UMAuthListener() {
             @Override
-            public void onADDismissed() {
-                Log.i("AD_DEMO", "onADDismissed");
+            public void onStart(SHARE_MEDIA share_media) {
             }
 
             @Override
-            public void onNoAD(int i) {
-                Log.i("AD_DEMO", "onNoAD");
+            public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> data) {
+//                String temp = "";
+//                for (String key : data.keySet()) {
+//                    temp = temp + key + " : " + data.get(key) + "\n";
+//                }
+//
+//                Log.i(TAG, "onComplete = " + temp);
+                try {
+                    String json = new JSONObject(data).toString();
+                    promise.resolve(json);
+                } catch (Exception e) {
+                    promise.reject("E_DATA_PARSE_FAILED", e);
+                }
             }
 
             @Override
-            public void onADPresent() {
-                Log.i("AD_DEMO", "onADPresent");
+            public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+                promise.reject("E_FAILED_TO_GET_INFO", "error: " + throwable.getLocalizedMessage());
             }
 
             @Override
-            public void onADClicked() {
-                Log.i("AD_DEMO", "onADClicked");
-            }
-
-            @Override
-            public void onADTick(long l) {
-                Log.i("AD_DEMO", "onADTick");
+            public void onCancel(SHARE_MEDIA share_media, int i) {
+                promise.reject("E_USER_CANCEL", "error: " + i);
             }
         });
-        */
+    }
+
+    @ReactMethod
+    public void showShareMenuView(String url, String title, String description) {
+        Activity activity = mContext.getCurrentActivity();
+        UMShareListener umShareListener = new UMShareListener() {
+            @Override
+            public void onStart(SHARE_MEDIA share_media) {
+                Log.i(TAG, "showShareMenuView onStart");
+            }
+
+            @Override
+            public void onResult(SHARE_MEDIA share_media) {
+                Log.i(TAG, "showShareMenuView onResult");
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+                Log.i(TAG, "showShareMenuView onError = " + throwable.getLocalizedMessage());
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA share_media) {
+                Log.i(TAG, "showShareMenuView onCancel");
+            }
+        };
+
+        UMImage thumb =  new UMImage(mContext, R.drawable.ic_launcher);
+        UMWeb web = new UMWeb(url);
+        web.setTitle(title);
+        web.setThumb(thumb);
+        web.setDescription(description);
+
+        new ShareAction(activity)
+                .withMedia(web)
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA)
+                .setCallback(umShareListener)
+                .open();
     }
 
     @Override
     public Map<String, Object> getConstants() {
+        UMShareAPI umShareAPI = UMShareAPI.get(mContext);
+        Activity activity = mContext.getCurrentActivity();
+
         final Map<String, Object> constants = new HashMap<>();
-        constants.put("IsAndroid", true);
+        constants.put("isAndroid", true);
+        constants.put("isWXSupport", umShareAPI.isSupport(activity, SHARE_MEDIA.WEIXIN));
+        constants.put("isQQSupport", umShareAPI.isSupport(activity, SHARE_MEDIA.QQ));
+        constants.put("isSinaSupport", umShareAPI.isSupport(activity, SHARE_MEDIA.SINA));
         return constants;
     }
 }

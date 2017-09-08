@@ -1,4 +1,4 @@
-package com.dwwang.RNAdPoly;
+package com.dwwang.sns;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,12 +10,12 @@ import com.facebook.react.bridge.JavaScriptModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 
-public class RNAdPolyPackage implements ReactPackage {
+public class RNSnsPackage implements ReactPackage {
 
   @Override
   public List<NativeModule> createNativeModules (ReactApplicationContext context) {
     List<NativeModule> modules = new ArrayList<>();
-    modules.add(new RNAdPolyModule(context));
+    modules.add(new RNSnsModule(context));
     return modules;
   }
 
