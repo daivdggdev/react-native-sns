@@ -6,8 +6,8 @@
 //  Copyright © 2017年 dwwang. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <React/RCTBridgeModule.h>
 
-@interface RNSns : NSObject
+@interface RNSns : NSObject <RCTBridgeModule>
 
 @end
