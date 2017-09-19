@@ -45,41 +45,22 @@ RCT_EXPORT_METHOD(setUmSocialAppkey:(NSString*)appKey)
     [[UMSocialManager defaultManager] setUmSocialAppkey:appKey];
 }
 
-RCT_EXPORT_METHOD(setPlaform:(NSString *)platformType appKey:(NSString *)appKey appSecret:(NSString *)appSecret redirectUrl:(NSString *)redirectUrl)
+RCT_EXPORT_METHOD(setPlaform:(NSString *)type appKey:(NSString *)appKey appSecret:(NSString *)appSecret redirectUrl:(NSString *)redirectUrl)
 {
-    UMSocialPlatformType platformType = UMSocialPlatformType_UnKnown;
-    switch (platformType)
-    {
-        case "weixin":
-            platformType = UMSocialPlatformType_WechatSession;
-            break;
-            
-        case "weibo":
-            platformType = UMSocialPlatformType_Sina;
-            break;
-            
-        case "qq":
-            platformType = UMSocialPlatformType_QQ;
-            break;
-            
-        default:
-            break;
-    }
-    
-    [[UMSocialManager defaultManager] setPlaform:platformType
+    [[UMSocialManager defaultManager] setPlaform:[self getUMSocialPlatformType:type]
                                           appKey:appKey
                                        appSecret:appSecret
                                      redirectURL:redirectUrl];
 }
 
 RCT_REMAP_METHOD(getPlatformInfo,
-                 platform:(NSInteger)platformType
+                 platform:(NSString*)type
                  resolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject)
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         __block BOOL isCompleted = NO;
-        [[UMSocialManager defaultManager] getUserInfoWithPlatform:(UMSocialPlatformType)platformType
+        [[UMSocialManager defaultManager] getUserInfoWithPlatform:[self getUMSocialPlatformType:type]
                                             currentViewController:nil
                                                        completion:^(id result, NSError *error)
          {
@@ -158,24 +139,45 @@ RCT_EXPORT_METHOD(showShareMenuView)
                                         currentViewController:nil
                                                    completion:^(id data, NSError *error) {
 #ifdef DEBUG
-                                                       if (error) {
-                                                           UMSocialLogInfo(@"************Share fail with error %@*********",error);
-                                                       }else{
-                                                           if ([data isKindOfClass:[UMSocialShareResponse class]]) {
-                                                               UMSocialShareResponse *resp = data;
-                                                               //分享结果消息
-                                                               UMSocialLogInfo(@"response message is %@",resp.message);
-                                                               //第三方原始返回的数据
-                                                               UMSocialLogInfo(@"response originalResponse data is %@",resp.originalResponse);
-                                                               
-                                                           }else{
-                                                               UMSocialLogInfo(@"response data is %@",data);
-                                                           }
-                                                       }
+                if (error) {
+                   UMSocialLogInfo(@"************Share fail with error %@*********",error);
+                }else{
+                   if ([data isKindOfClass:[UMSocialShareResponse class]]) {
+                       UMSocialShareResponse *resp = data;
+                       //分享结果消息
+                       UMSocialLogInfo(@"response message is %@",resp.message);
+                       //第三方原始返回的数据
+                       UMSocialLogInfo(@"response originalResponse data is %@",resp.originalResponse);
+                       
+                   }else{
+                       UMSocialLogInfo(@"response data is %@",data);
+                   }
+                }
 #endif
-                                                   }];
+           }];
         }];
     });
+}
+
+- (UMSocialPlatformType)getUMSocialPlatformType:(NSString*)type
+{
+    UMSocialPlatformType platformType = UMSocialPlatformType_UnKnown;
+    if (!type) return platformType;
+    
+    if ([type isEqualToString:@"weixin"])
+    {
+        platformType = UMSocialPlatformType_WechatSession;
+    }
+    else if ([type isEqualToString:@"weibo"])
+    {
+        platformType = UMSocialPlatformType_Sina;
+    }
+    else if ([type isEqualToString:@"qq"])
+    {
+        platformType = UMSocialPlatformType_QQ;
+    }
+    
+    return platformType;
 }
 
 - (NSDictionary *)constantsToExport

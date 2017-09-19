@@ -6,6 +6,14 @@ module.exports = {
   isQQSupport: RNSns.isQQSupport,
   isSinaSupport: RNSns.isSinaSupport,
 
+  setUmSocialAppkey: function(appKey) {
+    return RNSns.setUmSocialAppkey(appKey);
+  },
+
+  openLog: function(isOpen) {
+    return RNSns.openLog(isOpen);
+  },
+
   setPlaform: function(type, appKey, appSecret, redirectUrl) {
     return RNSns.setPlaform.apply(null, arguments);
   },

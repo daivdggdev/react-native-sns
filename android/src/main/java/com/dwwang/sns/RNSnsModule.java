@@ -41,17 +41,27 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
         super(context);
         this.mContext = context;
 
-        // 三方获取用户资料时每次都要进行授权
-        UMShareConfig config = new UMShareConfig();
-        config.isNeedAuthOnGetUserInfo(true);
-        UMShareAPI.get(context).setShareConfig(config);
-
         context.addActivityEventListener(mActivityEventListener);
     }
 
     @Override
     public String getName() {
         return "RNSns";
+    }
+
+    @ReactMethod
+    public void setUmSocialAppkey(String appKey) {
+        UMShareAPI.init(mContext, appKey);
+
+        // 三方获取用户资料时每次都要进行授权
+        UMShareConfig config = new UMShareConfig();
+        config.isNeedAuthOnGetUserInfo(true);
+        UMShareAPI.get(mContext).setShareConfig(config);
+    }
+
+    @ReactMethod
+    public void openLog(Boolean isOpen) {
+        // umeng暂没有找到对应的接口
     }
 
     @ReactMethod
@@ -166,7 +176,6 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
         Activity activity = mContext.getCurrentActivity();
 
         final Map<String, Object> constants = new HashMap<>();
-        constants.put("isAndroid", true);
         constants.put("isWXSupport", umShareAPI.isSupport(activity, SHARE_MEDIA.WEIXIN));
         constants.put("isQQSupport", umShareAPI.isSupport(activity, SHARE_MEDIA.QQ));
         constants.put("isSinaSupport", umShareAPI.isSupport(activity, SHARE_MEDIA.SINA));
