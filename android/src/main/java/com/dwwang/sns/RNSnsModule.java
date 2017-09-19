@@ -55,18 +55,20 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setWeixin(String id, String secret) {
-        PlatformConfig.setWeixin(id, secret);
-    }
+    public void setPlaform(String type, String appKey, String appSecret, String redirectUrl) {
+        switch (type) {
+            case "weixin":
+                PlatformConfig.setWeixin(appKey, appSecret);
+                break;
 
-    @ReactMethod
-    public void setSinaWeibo(String key, String secret, String redirectUrl) {
-        PlatformConfig.setSinaWeibo(key, secret, redirectUrl);
-    }
+            case "weibo":
+                PlatformConfig.setSinaWeibo(appKey, appSecret, redirectUrl);
+                break;
 
-    @ReactMethod
-    public void setQQZone(String id, String key) {
-        PlatformConfig.setQQZone(id, key);
+            case "qq":
+                PlatformConfig.setQQZone(appKey, appSecret);
+                break;
+        }
     }
 
     @ReactMethod

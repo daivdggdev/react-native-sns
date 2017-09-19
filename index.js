@@ -6,16 +6,8 @@ module.exports = {
   isQQSupport: RNSns.isQQSupport,
   isSinaSupport: RNSns.isSinaSupport,
 
-  setWeixin: function(id, secret) {
-    return RNSns.setWeixin(id, secret);
-  },
-
-  setSinaWeibo: function(key, secret, redirectUrl) {
-    return RNSns.setSinaWeibo(key, secret, redirectUrl);
-  },
-
-  setQQZone: function(id, key) {
-    return RNSns.setQQZone(id, key);
+  setPlaform: function(type, appKey, appSecret, redirectUrl) {
+    return RNSns.setPlaform.apply(null, arguments);
   },
 
   getPlatformInfo: function(type) {
