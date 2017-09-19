@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4500CA041F7118F9004A3683 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 454905BA1F6FB554002E85D0 /* CoreGraphics.framework */; };
 		45F85A431F55406C006E86C3 /* RNSns.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F85A421F55406C006E86C3 /* RNSns.m */; };
 		45F85A441F55406C006E86C3 /* RNSns.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 45F85A411F55406C006E86C3 /* RNSns.h */; };
 /* End PBXBuildFile section */
@@ -37,6 +38,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4500CA041F7118F9004A3683 /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,16 +239,9 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/UMSocial/UMSocialSDK",
-					"$(PROJECT_DIR)/UMSocial/UMSocialUI",
+					"$(PROJECT_DIR)/../../../ios/Pods/UMengUShare/UShareSDK",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/UMSocial/SocialLibraries/QQ",
-					"$(PROJECT_DIR)/UMSocial/SocialLibraries/Sina",
-					"$(PROJECT_DIR)/UMSocial/SocialLibraries/WeChat",
-					"$(PROJECT_DIR)/UMSocial/UMSocialSDKPlugin",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -258,16 +253,9 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/UMSocial/UMSocialSDK",
-					"$(PROJECT_DIR)/UMSocial/UMSocialUI",
+					"$(PROJECT_DIR)/../../../ios/Pods/UMengUShare/UShareSDK",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/UMSocial/SocialLibraries/QQ",
-					"$(PROJECT_DIR)/UMSocial/SocialLibraries/Sina",
-					"$(PROJECT_DIR)/UMSocial/SocialLibraries/WeChat",
-					"$(PROJECT_DIR)/UMSocial/UMSocialSDKPlugin",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

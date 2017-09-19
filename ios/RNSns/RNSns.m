@@ -30,6 +30,18 @@ RCT_EXPORT_MODULE();
     return [RNSns sharedMethodQueue];
 }
 
++ (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    BOOL result = [[UMSocialManager defaultManager] handleOpenURL:url
+                                              sourceApplication:sourceApplication
+                                                     annotation:annotation];
+
+    if (!result) {
+    // 其他如支付等SDK的回调
+    }
+    return result;
+}
+
 RCT_EXPORT_METHOD(addEvent:(NSString *)name location:(NSString *)location)
 {
     RCTLogInfo(@"Pretending to create an event %@ at %@", name, location);
@@ -45,7 +57,10 @@ RCT_EXPORT_METHOD(setUmSocialAppkey:(NSString*)appKey)
     [[UMSocialManager defaultManager] setUmSocialAppkey:appKey];
 }
 
-RCT_EXPORT_METHOD(setPlaform:(NSString *)type appKey:(NSString *)appKey appSecret:(NSString *)appSecret redirectUrl:(NSString *)redirectUrl)
+RCT_EXPORT_METHOD(setPlaform:(NSString *)type
+                  appKey:(NSString *)appKey
+                  appSecret:(NSString *)appSecret
+                  redirectUrl:(NSString *)redirectUrl)
 {
     [[UMSocialManager defaultManager] setPlaform:[self getUMSocialPlatformType:type]
                                           appKey:appKey
@@ -110,7 +125,9 @@ RCT_REMAP_METHOD(getPlatformInfo,
     });
 }
 
-RCT_EXPORT_METHOD(showShareMenuView)
+RCT_EXPORT_METHOD(showShareMenuView:(NSString *)url
+                  title:(NSString *)title
+                  description:(NSString *)description)
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         //显示分享面板
