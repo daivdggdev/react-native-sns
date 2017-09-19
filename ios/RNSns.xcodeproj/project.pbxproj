@@ -239,7 +239,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/../../../ios/Pods/UMengUShare/UShareSDK",
+					"$(PROJECT_DIR)/../../../ios/Pods/UMengUShare/UShareSDK/**",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
@@ -253,7 +253,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/../../../ios/Pods/UMengUShare/UShareSDK",
+					"$(PROJECT_DIR)/../../../ios/Pods/UMengUShare/UShareSDK/**",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
