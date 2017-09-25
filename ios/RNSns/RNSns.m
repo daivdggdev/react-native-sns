@@ -176,6 +176,18 @@ RCT_EXPORT_METHOD(showShareMenuView:(NSString *)url
     });
 }
 
+RCT_REMAP_METHOD(hasAnyMarketInstalled,
+                 resolver:(RCTPromiseResolveBlock)resolve
+                 rejecter:(RCTPromiseRejectBlock)reject)
+{
+    resolve([NSNumber numberWithBool:YES]);
+}
+
+RCT_EXPORT_METHOD(appraiseInMarket)
+{
+    
+}
+
 - (UMSocialPlatformType)getUMSocialPlatformType:(NSString*)type
 {
     UMSocialPlatformType platformType = UMSocialPlatformType_UnKnown;

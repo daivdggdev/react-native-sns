@@ -24,5 +24,13 @@ module.exports = {
 
   showShareMenuView: function(url, title, description) {
     return RNSns.showShareMenuView(url, title, description);
+  },
+
+  hasAnyMarketInstalled: function() {
+    return RNSns.hasAnyMarketInstalled();
+  },
+
+  appraiseInMarket: function() {
+    return RNSns.appraiseInMarket();
   }
 };

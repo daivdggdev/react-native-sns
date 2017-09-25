@@ -2,6 +2,9 @@ package com.dwwang.sns;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.util.Log;
 
 import com.facebook.react.bridge.ActivityEventListener;
@@ -25,6 +28,7 @@ import com.umeng.socialize.media.UMWeb;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -171,6 +175,37 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA)
                 .setCallback(umShareListener)
                 .open();
+    }
+
+    @ReactMethod
+    public void hasAnyMarketInstalled(Promise promise) {
+        boolean isInstalled = false;
+
+        try {
+            Intent intent = new Intent();
+            intent.setData(Uri.parse("market://details?id=android.browser"));
+            List<ResolveInfo> list = mContext.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+            isInstalled = (list.size() > 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        promise.resolve(isInstalled);
+    }
+
+    @ReactMethod
+    public void appraiseInMarket() {
+        try {
+            Activity activity = mContext.getCurrentActivity();
+            String packageName = activity.getPackageName();
+
+            Uri uri = Uri.parse("market://details?id=" + packageName);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            activity.startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
