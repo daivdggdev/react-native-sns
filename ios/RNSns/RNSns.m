@@ -201,9 +201,9 @@ RCT_EXPORT_METHOD(showShareMenuView:(NSString *)url
 {
     UMSocialManager *manager = [UMSocialManager defaultManager];
     return @{
-             @"isWXSupport": [NSNumber numberWithBool:[manager isSupport:UMSocialPlatformType_WechatSession]],
-             @"isQQSupport": [NSNumber numberWithBool:[manager isSupport:UMSocialPlatformType_QQ]],
-             @"isSinaSupport": [NSNumber numberWithBool:[manager isSupport:UMSocialPlatformType_Sina]],
+             @"isWXInstall": [NSNumber numberWithBool:[manager isInstall:UMSocialPlatformType_WechatSession]],
+             @"isQQInstall": [NSNumber numberWithBool:[manager isInstall:UMSocialPlatformType_QQ]],
+             @"isSinaInstall": [NSNumber numberWithBool:[manager isInstall:UMSocialPlatformType_Sina]],
              };
 }
 
