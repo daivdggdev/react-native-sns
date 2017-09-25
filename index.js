@@ -2,9 +2,9 @@
 
 var RNSns = require('react-native').NativeModules.RNSns;
 module.exports = {
-  isWXSupport: RNSns.isWXSupport,
-  isQQSupport: RNSns.isQQSupport,
-  isSinaSupport: RNSns.isSinaSupport,
+  isWXInstall: RNSns.isWXInstall,
+  isQQInstall: RNSns.isQQInstall,
+  isSinaInstall: RNSns.isSinaInstall,
 
   setUmSocialAppkey: function(appKey) {
     return RNSns.setUmSocialAppkey(appKey);

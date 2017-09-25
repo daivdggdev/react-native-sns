@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.facebook.react.bridge.ActivityEventListener;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.BaseActivityEventListener;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.WritableMap;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
@@ -106,15 +108,16 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
 
             @Override
             public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> data) {
-//                String temp = "";
-//                for (String key : data.keySet()) {
-//                    temp = temp + key + " : " + data.get(key) + "\n";
-//                }
-//
-//                Log.i(TAG, "onComplete = " + temp);
                 try {
-                    String json = new JSONObject(data).toString();
-                    promise.resolve(json);
+                    JSONObject jsonObject = new JSONObject(data);
+                    WritableMap params = Arguments.createMap();
+                    params.putString("uid", jsonObject.getString("uid"));
+                    params.putString("openId", jsonObject.getString("openid"));
+                    params.putString("username", jsonObject.getString("name"));
+                    params.putString("iconUrl", jsonObject.getString("iconurl"));
+                    params.putString("gender", jsonObject.getString("gender"));
+
+                    promise.resolve(params);
                 } catch (Exception e) {
                     promise.reject("E_DATA_PARSE_FAILED", e);
                 }
@@ -176,9 +179,9 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
         Activity activity = mContext.getCurrentActivity();
 
         final Map<String, Object> constants = new HashMap<>();
-        constants.put("isWXSupport", umShareAPI.isSupport(activity, SHARE_MEDIA.WEIXIN));
-        constants.put("isQQSupport", umShareAPI.isSupport(activity, SHARE_MEDIA.QQ));
-        constants.put("isSinaSupport", umShareAPI.isSupport(activity, SHARE_MEDIA.SINA));
+        constants.put("isWXInstall", umShareAPI.isInstall(activity, SHARE_MEDIA.WEIXIN));
+        constants.put("isQQInstall", umShareAPI.isInstall(activity, SHARE_MEDIA.QQ));
+        constants.put("isSinaInstall", umShareAPI.isInstall(activity, SHARE_MEDIA.SINA));
         return constants;
     }
 }
