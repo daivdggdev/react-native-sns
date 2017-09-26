@@ -116,10 +116,16 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
                     JSONObject jsonObject = new JSONObject(data);
                     WritableMap params = Arguments.createMap();
                     params.putString("uid", jsonObject.getString("uid"));
-                    params.putString("openId", jsonObject.getString("openid"));
                     params.putString("username", jsonObject.getString("name"));
                     params.putString("iconUrl", jsonObject.getString("iconurl"));
                     params.putString("gender", jsonObject.getString("gender"));
+
+                    // 微博返回的openid为空
+                    if (jsonObject.has("openid")) {
+                        params.putString("openId", jsonObject.getString("openid"));
+                    } else if (jsonObject.has("uid")) {
+                        params.putString("openId", jsonObject.getString("uid"));
+                    }
 
                     promise.resolve(params);
                 } catch (Exception e) {
