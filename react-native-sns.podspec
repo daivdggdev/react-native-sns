@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.homepage     = package['homepage']
   s.platform     = :ios, "8.0"
   s.source       = { :git => "https://github.com/daivdggdev/react-native-sns", :tag => "v#{s.version}" }
-  s.source_files = "ios/*.{h,m}"
+  s.source_files = "ios/RNSns/*.{h,m}"
 
   s.dependency 'React'
 end
