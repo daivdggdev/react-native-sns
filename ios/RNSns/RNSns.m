@@ -30,6 +30,11 @@ RCT_EXPORT_MODULE();
     return [RNSns sharedMethodQueue];
 }
 
++ (BOOL)requiresMainQueueSetup
+{
+    return YES;
+}
+
 + (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
     BOOL result = [[UMSocialManager defaultManager] handleOpenURL:url
