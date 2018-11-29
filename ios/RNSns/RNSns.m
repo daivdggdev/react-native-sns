@@ -193,12 +193,15 @@ RCT_REMAP_METHOD(showShareMenuViewWithImage,
         [UMSocialUIManager showShareMenuViewInWindowWithPlatformSelectionBlock:^(UMSocialPlatformType platformType, NSDictionary *userInfo) {
             // 根据获取的platformType确定所选平台进行下一步操作
             
+            //创建分享消息对象
+            UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+            
             //创建图片对象
             UMShareImageObject *shareObject = [[UMShareImageObject alloc] init];
             //如果有缩略图，则设置缩略图
-            shareObject.thumbImage = [UIImage imageNamed:@"icon"];
+            shareObject.thumbImage = [UIImage imageNamed:@"icon-50"];
             //base64转图片
-            NSData *data = [[NSData alloc] initWithBase64EncodedString:strEncodeData
+            NSData *data = [[NSData alloc] initWithBase64EncodedString:imageBase64
                                                                options:NSDataBase64DecodingIgnoreUnknownCharacters];
             [shareObject setShareImage:[UIImage imageWithData:data]];
             //分享消息对象设置分享内容对象
