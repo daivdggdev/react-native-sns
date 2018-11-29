@@ -26,6 +26,10 @@ module.exports = {
     return RNSns.showShareMenuView(url, title, description);
   },
 
+  showShareMenuViewWithImage: function(imageBase64) {
+    return RNSns.showShareMenuViewWithImage(imageBase64);
+  },
+
   hasAnyMarketInstalled: function() {
     return RNSns.hasAnyMarketInstalled();
   },

@@ -146,7 +146,7 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void showShareMenuView(String url, String title, String description) {
+    public void showShareMenuView(String url, String title, String description, final Promise promise) {
         Activity activity = mContext.getCurrentActivity();
         UMShareListener umShareListener = new UMShareListener() {
             @Override
@@ -157,20 +157,23 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
             @Override
             public void onResult(SHARE_MEDIA share_media) {
                 Log.i(TAG, "showShareMenuView onResult");
+                promise.resolve(share_media);
             }
 
             @Override
             public void onError(SHARE_MEDIA share_media, Throwable throwable) {
                 Log.i(TAG, "showShareMenuView onError = " + throwable.getLocalizedMessage());
+                promise.reject("E_FAILED_TO_SHARE", throwable.getLocalizedMessage());
             }
 
             @Override
             public void onCancel(SHARE_MEDIA share_media) {
                 Log.i(TAG, "showShareMenuView onCancel");
+                promise.reject("E_USER_CANCEL", "取消分享");
             }
         };
 
-        UMImage thumb =  new UMImage(mContext, R.drawable.ic_launcher);
+        UMImage thumb = new UMImage(mContext, R.drawable.ic_launcher);
         UMWeb web = new UMWeb(url);
         web.setTitle(title);
         web.setThumb(thumb);
@@ -178,6 +181,44 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
 
         new ShareAction(activity)
                 .withMedia(web)
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA)
+                .setCallback(umShareListener)
+                .open();
+    }
+
+    @ReactMethod
+    public void showShareMenuViewWithImage(String imageBase64, final Promise promise) {
+        Activity activity = mContext.getCurrentActivity();
+        UMShareListener umShareListener = new UMShareListener() {
+            @Override
+            public void onStart(SHARE_MEDIA share_media) {
+                Log.i(TAG, "showShareMenuView onStart");
+            }
+
+            @Override
+            public void onResult(SHARE_MEDIA share_media) {
+                Log.i(TAG, "showShareMenuView onResult");
+                promise.resolve(share_media);
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+                Log.i(TAG, "showShareMenuView onError = " + throwable.getLocalizedMessage());
+                promise.reject("E_FAILED_TO_SHARE", throwable.getLocalizedMessage());
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA share_media) {
+                Log.i(TAG, "showShareMenuView onCancel");
+                promise.reject("E_USER_CANCEL", "取消分享");
+            }
+        };
+
+        byte[] b = Base64.decode(imageBase64, Base64.DEFAULT);
+        UMImage image = new UMImage(mContext, b);
+
+        new ShareAction(activity)
+                .withMedia(image)
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA)
                 .setCallback(umShareListener)
                 .open();

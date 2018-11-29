@@ -146,11 +146,11 @@ RCT_EXPORT_METHOD(showShareMenuView:(NSString *)url
             
             //创建网页内容对象
             UIImage *thumbURL = [UIImage imageNamed:@"icon-50"];
-            UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:@"口袋五线谱"
-                                                                                     descr:@"让你离弹钢琴的梦想更进一步"
+            UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:title
+                                                                                     descr:description
                                                                                  thumImage:thumbURL];
             //设置网页地址
-            shareObject.webpageUrl = @"https://itunes.apple.com/us/app/id1157856746?l=zh&ls=1&mt=8";
+            shareObject.webpageUrl = url;
             
             //分享消息对象设置分享内容对象
             messageObject.shareObject = shareObject;
@@ -177,6 +177,65 @@ RCT_EXPORT_METHOD(showShareMenuView:(NSString *)url
                 }
 #endif
            }];
+        }];
+    });
+}
+
+RCT_REMAP_METHOD(showShareMenuViewWithImage,
+                 imageBase64:(NSString *)imageBase64
+                 resolver:(RCTPromiseResolveBlock)resolve
+                 rejecter:(RCTPromiseRejectBlock)reject)
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        //显示分享面板
+        [UMSocialUIManager setPreDefinePlatforms:@[@(UMSocialPlatformType_Sina),@(UMSocialPlatformType_QQ),@(UMSocialPlatformType_WechatSession), @(UMSocialPlatformType_WechatTimeLine)]];
+        
+        [UMSocialUIManager showShareMenuViewInWindowWithPlatformSelectionBlock:^(UMSocialPlatformType platformType, NSDictionary *userInfo) {
+            // 根据获取的platformType确定所选平台进行下一步操作
+            
+            //创建图片对象
+            UMShareImageObject *shareObject = [[UMShareImageObject alloc] init];
+            //如果有缩略图，则设置缩略图
+            shareObject.thumbImage = [UIImage imageNamed:@"icon"];
+            //base64转图片
+            NSData *data = [[NSData alloc] initWithBase64EncodedString:strEncodeData
+                                                               options:NSDataBase64DecodingIgnoreUnknownCharacters];
+            [shareObject setShareImage:[UIImage imageWithData:data]];
+            //分享消息对象设置分享内容对象
+            messageObject.shareObject = shareObject;
+            
+            //调用分享接口
+            [[UMSocialManager defaultManager] shareToPlatform:platformType
+                                                messageObject:messageObject
+                                        currentViewController:nil
+                                                   completion:^(id data, NSError *error)
+            {
+                if (error)
+                {
+                    reject(@"shareImage", @"shareImage error", error);
+                }
+                else
+                {
+                    resolve(data);
+                }
+                                                       
+#ifdef DEBUG
+               if (error) {
+                   UMSocialLogInfo(@"************Share fail with error %@*********",error);
+               }else{
+                   if ([data isKindOfClass:[UMSocialShareResponse class]]) {
+                       UMSocialShareResponse *resp = data;
+                       //分享结果消息
+                       UMSocialLogInfo(@"response message is %@",resp.message);
+                       //第三方原始返回的数据
+                       UMSocialLogInfo(@"response originalResponse data is %@",resp.originalResponse);
+                       
+                   }else{
+                       UMSocialLogInfo(@"response data is %@",data);
+                   }
+               }
+#endif
+            }];
         }];
     });
 }
