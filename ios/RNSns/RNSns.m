@@ -8,8 +8,8 @@
 
 #import "RNSns.h"
 #import <React/RCTLog.h>
+#import <UMShare/UMShare.h>
 #import <UShareUI/UShareUI.h>
-#import <UMSocialCore/UMSocialCore.h>
 
 @implementation RNSns
 
@@ -35,14 +35,11 @@ RCT_EXPORT_MODULE();
     return YES;
 }
 
-+ (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
++ (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
-    BOOL result = [[UMSocialManager defaultManager] handleOpenURL:url
-                                              sourceApplication:sourceApplication
-                                                     annotation:annotation];
-
+    BOOL result = [[UMSocialManager defaultManager] handleOpenURL:url];
     if (!result) {
-    // 其他如支付等SDK的回调
+        // 其他如支付等SDK的回调
     }
     return result;
 }
@@ -59,7 +56,7 @@ RCT_EXPORT_METHOD(openLog:(BOOL)isOpen)
 
 RCT_EXPORT_METHOD(setUmSocialAppkey:(NSString*)appKey)
 {
-    [[UMSocialManager defaultManager] setUmSocialAppkey:appKey];
+    //[[UMSocialManager defaultManager] setUmSocialAppkey:appKey];
 }
 
 RCT_EXPORT_METHOD(setPlaform:(NSString *)type

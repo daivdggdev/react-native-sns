@@ -58,7 +58,7 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setUmSocialAppkey(String appKey) {
-        UMShareAPI.init(mContext, appKey);
+        //UMShareAPI.init(mContext, appKey);
 
         // 三方获取用户资料时每次都要进行授权
         UMShareConfig config = new UMShareConfig();
