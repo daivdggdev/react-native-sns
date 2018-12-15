@@ -180,7 +180,7 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
             @Override
             public void onResult(SHARE_MEDIA share_media) {
                 Log.i(TAG, "showShareMenuView onResult");
-                promise.resolve(share_media);
+                promise.resolve(true);
             }
 
             @Override
@@ -221,7 +221,7 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
             @Override
             public void onResult(SHARE_MEDIA share_media) {
                 Log.i(TAG, "showShareMenuView onResult");
-                promise.resolve(share_media);
+                promise.resolve(true);
             }
 
             @Override
