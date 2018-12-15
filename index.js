@@ -2,10 +2,6 @@
 
 var RNSns = require('react-native').NativeModules.RNSns;
 module.exports = {
-  isWXInstall: RNSns.isWXInstall,
-  isQQInstall: RNSns.isQQInstall,
-  isSinaInstall: RNSns.isSinaInstall,
-
   setUmSocialAppkey: function(appKey) {
     return RNSns.setUmSocialAppkey(appKey);
   },
@@ -16,6 +12,10 @@ module.exports = {
 
   setPlaform: function(type, appKey, appSecret, redirectUrl) {
     return RNSns.setPlaform.apply(null, arguments);
+  },
+
+  isInstall: function(type) {
+    return RNSns.isInstall(type);
   },
 
   getPlatformInfo: function(type) {

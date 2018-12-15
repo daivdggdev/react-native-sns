@@ -1,6 +1,6 @@
 {
   "name": "react-native-sns",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "social for react native",
   "main": "index.js",
   "scripts": {

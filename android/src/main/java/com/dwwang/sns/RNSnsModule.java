@@ -89,6 +89,28 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public boolean isInstall(String type) {
+        SHARE_MEDIA platform = SHARE_MEDIA.QQ;
+        switch (type) {
+            case "weixin":
+                platform = SHARE_MEDIA.WEIXIN;
+                break;
+
+            case "weibo":
+                platform = SHARE_MEDIA.SINA;
+                break;
+
+            case "qq":
+                platform = SHARE_MEDIA.QQ;
+                break;
+        }
+
+        UMShareAPI umShareAPI = UMShareAPI.get(mContext);
+        Activity activity = mContext.getCurrentActivity();
+        return umShareAPI.isInstall(activity, platform);
+    }
+
+    @ReactMethod
     public void getPlatformInfo(String type, final Promise promise) {
         SHARE_MEDIA platform = SHARE_MEDIA.QQ;
         switch (type) {
@@ -254,17 +276,5 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public Map<String, Object> getConstants() {
-        UMShareAPI umShareAPI = UMShareAPI.get(mContext);
-        Activity activity = mContext.getCurrentActivity();
-
-        final Map<String, Object> constants = new HashMap<>();
-        constants.put("isWXInstall", umShareAPI.isInstall(activity, SHARE_MEDIA.WEIXIN));
-        constants.put("isQQInstall", umShareAPI.isInstall(activity, SHARE_MEDIA.QQ));
-        constants.put("isSinaInstall", umShareAPI.isInstall(activity, SHARE_MEDIA.SINA));
-        return constants;
     }
 }
