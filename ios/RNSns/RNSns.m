@@ -129,6 +129,7 @@ RCT_REMAP_METHOD(getPlatformInfo,
 
 RCT_EXPORT_METHOD(showShareMenuView:(NSString *)url
                   title:(NSString *)title
+                  imageUrl:(NSString *)imageUrl
                   description:(NSString *)description)
 {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -142,10 +143,9 @@ RCT_EXPORT_METHOD(showShareMenuView:(NSString *)url
             UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
             
             //创建网页内容对象
-            UIImage *thumbURL = [UIImage imageNamed:@"icon-50"];
             UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:title
                                                                                      descr:description
-                                                                                 thumImage:thumbURL];
+                                                                                 thumImage:imageUrl];
             //设置网页地址
             shareObject.webpageUrl = url;
             

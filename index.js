@@ -22,8 +22,8 @@ module.exports = {
     return RNSns.getPlatformInfo(type);
   },
 
-  showShareMenuView: function(url, title, description) {
-    return RNSns.showShareMenuView(url, title, description);
+  showShareMenuView: function(url, title, imageUrl, description) {
+    return RNSns.showShareMenuView.apply(null, arguments);
   },
 
   showShareMenuViewWithImage: function(imageBase64) {

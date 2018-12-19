@@ -169,7 +169,7 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void showShareMenuView(String url, String title, String description, final Promise promise) {
+    public void showShareMenuView(String url, String title, String imageUrl, String description, final Promise promise) {
         Activity activity = mContext.getCurrentActivity();
         UMShareListener umShareListener = new UMShareListener() {
             @Override
@@ -196,7 +196,7 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
             }
         };
 
-        UMImage thumb = new UMImage(mContext, R.drawable.ic_launcher);
+        UMImage thumb = new UMImage(mContext, imageUrl);
         UMWeb web = new UMWeb(url);
         web.setTitle(title);
         web.setThumb(thumb);
