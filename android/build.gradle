@@ -2,6 +2,7 @@ buildscript {
 
   repositories {
     mavenCentral()
+    maven { url 'https://repo1.maven.org/maven2/' }
   }
 
   dependencies {
@@ -30,6 +31,8 @@ android {
 }
 
 dependencies {
+  compile fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+
   compile 'com.umeng.umsdk:share-core:7.1.5' //分享核心库，必选
   compile 'com.umeng.umsdk:share-board:7.1.5' //分享面板功能，可选
 
@@ -41,7 +44,6 @@ dependencies {
   compile 'com.squareup.okhttp3:okhttp:3.12.12' //QQ SDK在3.53.0版本及以上时需要集成okhttp官方依赖库，必选
 
   compile 'com.umeng.umsdk:share-sina:7.1.5' //新浪微博完整版
-  compile 'com.sina.weibo.sdk:core:10.10.0:openDefaultRelease@aar' //新浪微博官方SDK依赖库，必选，如在线集成失败请本地下载离线包https://counsel.umeng.com/api/activity/download?fileName=activity/67/openDefault-10.10.0.aar
 
   compile 'com.facebook.react:react-native:+'
 }
