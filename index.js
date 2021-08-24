@@ -10,7 +10,7 @@ module.exports = {
     return RNSns.openLog(isOpen);
   },
 
-  setPlaform: function(type, appKey, appSecret, redirectUrl) {
+  setPlaform: function(type, appKey, appSecret, redirectUrl, fileProvider) {
     return RNSns.setPlaform.apply(null, arguments);
   },
 
