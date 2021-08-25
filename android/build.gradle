@@ -31,7 +31,7 @@ android {
 }
 
 dependencies {
-  compile fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+  // compile fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
 
   compile 'com.umeng.umsdk:share-core:7.1.5' //分享核心库，必选
   compile 'com.umeng.umsdk:share-board:7.1.5' //分享面板功能，可选
@@ -43,7 +43,7 @@ dependencies {
   compile 'com.tencent.tauth:qqopensdk:3.53.0' //QQ官方依赖库，必选
   compile 'com.squareup.okhttp3:okhttp:3.12.12' //QQ SDK在3.53.0版本及以上时需要集成okhttp官方依赖库，必选
 
-  compile 'com.umeng.umsdk:share-sina:7.1.5' //新浪微博完整版
+  // compile 'com.umeng.umsdk:share-sina:7.1.5' //新浪微博完整版
 
   compile 'com.facebook.react:react-native:+'
 }
