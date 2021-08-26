@@ -38,8 +38,14 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
     ReactApplicationContext mContext;
 
     private final ActivityEventListener mActivityEventListener = new BaseActivityEventListener() {
+        // @Override
+        // public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+        //     UMShareAPI.get(mContext).onActivityResult(requestCode, resultCode, data);
+        // }
+
         @Override
-        public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+        protected void onActivityResult(int requestCode, int resultCode, Intent data){
+            super.onActivityResult(requestCode, resultCode, data);
             UMShareAPI.get(mContext).onActivityResult(requestCode, resultCode, data);
         }
     };
@@ -207,7 +213,7 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
 
         new ShareAction(activity)
                 .withMedia(web)
-                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA)
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ)
                 .setCallback(umShareListener)
                 .open();
     }
@@ -245,7 +251,7 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
 
         new ShareAction(activity)
                 .withMedia(image)
-                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA)
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ)
                 .setCallback(umShareListener)
                 .open();
     }
