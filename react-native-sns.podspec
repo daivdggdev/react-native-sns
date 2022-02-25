@@ -14,13 +14,13 @@ Pod::Spec.new do |s|
   s.source_files = "ios/RNSns/*.{h,m}"
 
   s.dependency 'React'
-  s.dependency 'UMCCommon'
+  s.dependency 'UMCommon'
   # U-Share SDK UI模块（分享面板，建议添加）
-  s.dependency 'UMCShare/UI'
+  s.dependency 'UMShare/UI'
   # 集成微信(精简版0.2M)
-  s.dependency 'UMCShare/Social/ReducedWeChat'
+  s.dependency 'UMShare/Social/WeChat'
   # 集成QQ(精简版0.5M)
-  s.dependency 'UMCShare/Social/ReducedQQ'
+  s.dependency 'UMShare/Social/QQ'
   # 集成新浪微博(精简版1M)
-  s.dependency 'UMCShare/Social/ReducedSina'
+  s.dependency 'UMShare/Social/Sina'
 end

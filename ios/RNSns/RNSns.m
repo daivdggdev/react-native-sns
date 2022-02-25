@@ -62,7 +62,8 @@ RCT_EXPORT_METHOD(setUmSocialAppkey:(NSString*)appKey)
 RCT_EXPORT_METHOD(setPlaform:(NSString *)type
                   appKey:(NSString *)appKey
                   appSecret:(NSString *)appSecret
-                  redirectUrl:(NSString *)redirectUrl)
+                  redirectUrl:(NSString *)redirectUrl
+                  fileProvider:(NSString *)fileProvider)
 {
     [[UMSocialManager defaultManager] setPlaform:[self getUMSocialPlatformType:type]
                                           appKey:appKey
