@@ -25,6 +25,7 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
+import com.tencent.tauth.Tencent;
 
 import org.json.JSONObject;
 
@@ -32,19 +33,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class RNSnsModule extends ReactContextBaseJavaModule {
     private static final String TAG = "RNSnsModule";
     ReactApplicationContext mContext;
 
     private final ActivityEventListener mActivityEventListener = new BaseActivityEventListener() {
         // @Override
-        // public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-        //     UMShareAPI.get(mContext).onActivityResult(requestCode, resultCode, data);
+        // public void onActivityResult(Activity activity, int requestCode, int
+        // resultCode, Intent data) {
+        // UMShareAPI.get(mContext).onActivityResult(requestCode, resultCode, data);
         // }
 
         @Override
-        public void onActivityResult(int requestCode, int resultCode, Intent data){
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
             super.onActivityResult(requestCode, resultCode, data);
             UMShareAPI.get(mContext).onActivityResult(requestCode, resultCode, data);
         }
@@ -64,12 +65,15 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setUmSocialAppkey(String appKey) {
-        //UMShareAPI.init(mContext, appKey);
+        // UMShareAPI.init(mContext, appKey);
 
         // 三方获取用户资料时每次都要进行授权
         UMShareConfig config = new UMShareConfig();
         config.isNeedAuthOnGetUserInfo(true);
         UMShareAPI.get(mContext).setShareConfig(config);
+
+        // QQ官方sdk授权
+        Tencent.setIsPermissionGranted(true);
     }
 
     @ReactMethod
@@ -178,7 +182,8 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void showShareMenuView(String url, String title, String imageUrl, String description, final Promise promise) {
+    public void showShareMenuView(String url, String title, String imageUrl, String description,
+            final Promise promise) {
         Activity activity = mContext.getCurrentActivity();
         UMShareListener umShareListener = new UMShareListener() {
             @Override
@@ -263,7 +268,8 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
         try {
             Intent intent = new Intent();
             intent.setData(Uri.parse("market://details?id=android.browser"));
-            List<ResolveInfo> list = mContext.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+            List<ResolveInfo> list = mContext.getPackageManager().queryIntentActivities(intent,
+                    PackageManager.MATCH_DEFAULT_ONLY);
             isInstalled = (list.size() > 0);
         } catch (Exception e) {
             e.printStackTrace();
