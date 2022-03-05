@@ -44,7 +44,7 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
         // }
 
         @Override
-        protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        public void onActivityResult(int requestCode, int resultCode, Intent data){
             super.onActivityResult(requestCode, resultCode, data);
             UMShareAPI.get(mContext).onActivityResult(requestCode, resultCode, data);
         }
