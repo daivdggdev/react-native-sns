@@ -45,8 +45,8 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
         // }
 
         @Override
-        public void onActivityResult(int requestCode, int resultCode, Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
+        public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(activity, requestCode, resultCode, data);
             UMShareAPI.get(mContext).onActivityResult(requestCode, resultCode, data);
         }
     };
@@ -144,10 +144,12 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
         UMShareAPI.get(mContext).getPlatformInfo(activity, platform, new UMAuthListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
+                Log.i(TAG, "getPlatformInfo onStart");
             }
 
             @Override
             public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> data) {
+                Log.i(TAG, "getPlatformInfo onComplete");
                 try {
                     JSONObject jsonObject = new JSONObject(data);
                     WritableMap params = Arguments.createMap();
