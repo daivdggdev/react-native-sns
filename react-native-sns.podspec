@@ -15,6 +15,7 @@ Pod::Spec.new do |s|
 
   s.dependency 'React'
   s.dependency 'UMCommon'
+  s.dependency 'UMDevice'
   # U-Share SDK UI模块（分享面板，建议添加）
   s.dependency 'UMShare/UI'
   # 集成微信(精简版0.2M)
