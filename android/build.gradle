@@ -13,12 +13,12 @@ buildscript {
 apply plugin: 'com.android.library'
 
 android {
-  compileSdkVersion 23
-  buildToolsVersion '25.0.0'
+  compileSdkVersion 35
+  buildToolsVersion '35.0.0'
 
   defaultConfig {
-    minSdkVersion 16
-    targetSdkVersion 23
+    minSdkVersion 24
+    targetSdkVersion 34
     versionCode 1
     versionName "1.0"
     ndk {
@@ -31,19 +31,19 @@ android {
 }
 
 dependencies {
-  // compile fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+  // implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
 
-  compile 'com.umeng.umsdk:share-core:7.1.7' //分享核心库，必选
-  compile 'com.umeng.umsdk:share-board:7.1.7' //分享面板功能，可选
+  implementation 'com.umeng.umsdk:share-core:7.1.7' //分享核心库，必选
+  implementation 'com.umeng.umsdk:share-board:7.1.7' //分享面板功能，可选
 
-  compile 'com.umeng.umsdk:share-wx:7.1.7' //微信完整版
-  compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:6.8.0' //微信官方依赖库，必选
+  implementation 'com.umeng.umsdk:share-wx:7.1.7' //微信完整版
+  implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:6.8.0' //微信官方依赖库，必选
 
-  compile 'com.umeng.umsdk:share-qq:7.1.7' //QQ完整版
-  compile files('libs/open_sdk_3.5.7.4_r1bc9afe_lite.jar') //QQ官方依赖库，必选
-  compile 'com.squareup.okhttp3:okhttp:3.14.9' //QQ SDK在3.53.0版本及以上时需要集成okhttp官方依赖库，必选
+  implementation 'com.umeng.umsdk:share-qq:7.1.7' //QQ完整版
+  implementation files('libs/open_sdk_3.5.7.4_r1bc9afe_lite.jar') //QQ官方依赖库，必选
+  implementation 'com.squareup.okhttp3:okhttp:3.14.9' //QQ SDK在3.53.0版本及以上时需要集成okhttp官方依赖库，必选
 
-  // compile 'com.umeng.umsdk:share-sina:7.1.5' //新浪微博完整版
+  // implementation 'com.umeng.umsdk:share-sina:7.1.5' //新浪微博完整版
 
-  compile 'com.facebook.react:react-native:+'
+  implementation 'com.facebook.react:react-native:+'
 }
