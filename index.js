@@ -30,6 +30,10 @@ module.exports = {
     return RNSns.showShareMenuViewWithImage(imageBase64);
   },
 
+  showShareMiniProgram: function(url, title, imageUrl, description, path, appId) {
+    return RNSns.showShareMiniProgram.apply(null, arguments);
+  },
+
   hasAnyMarketInstalled: function() {
     return RNSns.hasAnyMarketInstalled();
   },

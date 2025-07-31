@@ -25,6 +25,7 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.media.UMMin;
 import com.tencent.tauth.Tencent;
 
 import org.json.JSONObject;
@@ -261,6 +262,56 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ)
                 .setCallback(umShareListener)
                 .open();
+    }
+
+    @ReactMethod
+    public void showShareMiniProgram(String url, String title, String imageUrl, String description, String path,
+            String appId,
+            final Promise promise) {
+        Activity activity = mContext.getCurrentActivity();
+        UMShareListener umShareListener = new UMShareListener() {
+            @Override
+            public void onStart(SHARE_MEDIA share_media) {
+                Log.i(TAG, "showShareMenuView onStart");
+            }
+
+            @Override
+            public void onResult(SHARE_MEDIA share_media) {
+                Log.i(TAG, "showShareMenuView onResult");
+                promise.resolve(true);
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+                Log.i(TAG, "showShareMenuView onError = " + throwable.getLocalizedMessage());
+                promise.reject("E_FAILED_TO_SHARE", throwable.getLocalizedMessage());
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA share_media) {
+                Log.i(TAG, "showShareMenuView onCancel");
+                promise.reject("E_USER_CANCEL", "取消分享");
+            }
+        };
+
+        // 兼容低版本的网页链接
+        UMMin umMin = new UMMin(url);
+        // 小程序消息封面图片
+        umMin.setThumb(new UMImage(mContext, imageUrl));
+        // 小程序消息title
+        umMin.setTitle(title);
+        // 小程序消息描述
+        umMin.setDescription(description);
+        // 小程序页面路径
+        umMin.setPath(path);
+        // 小程序原始id,在微信平台查询
+        umMin.setUserName(appId);
+
+        new ShareAction(activity)
+                .withMedia(umMin)
+                .setPlatform(SHARE_MEDIA.WEIXIN)
+                .setCallback(umShareListener)
+                .share();
     }
 
     @ReactMethod
