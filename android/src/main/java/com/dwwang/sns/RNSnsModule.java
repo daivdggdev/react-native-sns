@@ -150,20 +150,23 @@ public class RNSnsModule extends ReactContextBaseJavaModule {
 
             @Override
             public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> data) {
-                Log.i(TAG, "getPlatformInfo onComplete");
                 try {
+                    Log.i(TAG, "getPlatformInfo onComplete: " + data.toString());
                     JSONObject jsonObject = new JSONObject(data);
                     WritableMap params = Arguments.createMap();
-                    params.putString("uid", jsonObject.getString("uid"));
-                    params.putString("username", jsonObject.getString("name"));
-                    params.putString("iconUrl", jsonObject.getString("iconurl"));
-                    params.putString("gender", jsonObject.getString("gender"));
 
-                    // 微博返回的openid为空
-                    if (jsonObject.has("openid")) {
-                        params.putString("openId", jsonObject.getString("openid"));
-                    } else if (jsonObject.has("uid")) {
-                        params.putString("openId", jsonObject.getString("uid"));
+                    String openId = jsonObject.optString("openid", "");
+                    String uid = jsonObject.optString("uid", "");
+
+                    params.putString("uid", uid);
+                    params.putString("openId", openId);
+                    params.putString("username", jsonObject.optString("name", ""));
+                    params.putString("iconUrl", jsonObject.optString("iconurl", ""));
+                    params.putString("gender", jsonObject.optString("gender", ""));
+
+                    // 微博返回的openid为空，使用uid
+                    if (openId == null || openId.isEmpty()) {
+                        params.putString("openId", uid);
                     }
 
                     promise.resolve(params);

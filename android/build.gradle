@@ -43,7 +43,11 @@ dependencies {
   implementation files('libs/open_sdk_3.5.7.4_r1bc9afe_lite.jar') //QQ官方依赖库，必选
   implementation 'com.squareup.okhttp3:okhttp:3.14.9' //QQ SDK在3.53.0版本及以上时需要集成okhttp官方依赖库，必选
 
-  // implementation 'com.umeng.umsdk:share-sina:7.1.5' //新浪微博完整版
+  //新浪微博
+  // implementation('io.github.sinaweibosdk:core:13.10.1') {
+  //   exclude module: 'unspecified'
+  // }
+  // implementation 'com.umeng.umsdk:share-sina:7.1.7' //新浪微博完整版
 
   implementation 'com.facebook.react:react-native:+'
 }
